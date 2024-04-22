@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<link href="{{ url_assets }}/css/base.css" rel="stylesheet" type="text/css" />
+<link rel="stylesheet" type="text/css" href="{{portal_app_url}}/bundles/ueditnavigation/css/smoothness/jquery-ui-1.10.4.custom.min.css" />
+
+<script>
+ var UrlService= "http://{{app.request.host}}{{app.request.baseurl}}/breadcrumbs/";
+ var portal = {
+    name: "CMS UEDIT",
+    url: "{{ portalName }}"
+ }
+
+</script>
+
+{% javascripts
+    '@UEditNavigationBundle/Resources/public/js/ue-breadcrumbEditor.js'
+	'@UEditNavigationBundle/Resources/public/js/jquery-1.9.1.min.js'
+    '@UEditNavigationBundle/Resources/public/js/jquery-ui-1.10.2.min.js' %}
+        <script src="{{ asset_url }}" type="text/javascript"></script>
+{% endjavascripts %}
+
+<style type="text/css">
+body {
+font-size: 12px;
+padding: 15px;
+}
+label, input {
+display: block;
+}
+input.text {
+margin-bottom: 12px;
+padding: 0.4em;
+}
+#dialog-loading p {
+margin-top: 10px;
+text-align: center;
+}
+#dialog-preview .rastro-migas {
+margin-left: 0px;
+}
+#dialog-alert p, #dialog-delete p {
+margin-top: 10px;
+}
+.ui-widget-header, .ui-widget-content {
+padding: 8px;
+}
+.node label.ui-state-disabled {
+opacity: 1;
+}
+.toolbar .ui-state-disabled, .node .ui-state-disabled {
+opacity: 0.20;
+}
+#dialog-form-validate, #dialog-breadcrumb-validate {
+border: 1px solid transparent;
+padding: 0.5em;
+margin: 10px 0 12px 0;
+}
+.no-close .ui-dialog-titlebar-close {
+display: none;
+}
+input[type="checkbox"] {
+width: inherit;
+margin: 5px 0;
+}
+#nav1, #sortable, .toolbar {
+margin-bottom: 30px;
+}
+.node {
+padding: 5px 5px 5px 15px;
+margin-bottom: 4px;
+}
+.miga, .miga .ui-button-text {
+color: #2A8A0A;
+font-weight: bold;
+}
+#resizable {
+width: 700px;
+}
+</style>
+</head>
+<body>
+<div id="editor">
+<div id="nav1" class="ui-widget-header ui-corner-all"></div>
+<div class="toolbar ui-widget-header ui-corner-all">
+<!--button class="preview-breadcrumb">Preview</button>
+<button class="path-breadcrumb">Path</button>
+<button class="html-breadcrumb">HTML</button-->
+<button class="get-breadcrumb">Obtener Miga</button>
+<button class="get-html-breadcrumb">Obtener HTML Miga</button>
+</div>
+<div id="resizable"><div id="sortable" class="ui-widget-content ui-corner-all"></div></div>
+<div class="toolbar ui-widget-header ui-corner-all">
+<button class="get-breadcrumb">Obtener Miga</button>
+<button class="get-html-breadcrumb">Obtener HTML Miga</button>
+</div>
+<div id="dialog-loading" title="Cargando ...">
+<p><img src="http://estaticos03.cache.el-mundo.net/pruebas/mcalvo/css_desktop/miga/ajax-loader.gif" /></p>
+</div>
+<div id="dialog-preview" title="Previsualizaci&oacute;n"></div>
+<div id="dialog-alert" title="Alerta">
+<p><span class="ui-icon ui-icon-alert" style="float: left; margin: 0 7px 20px 0;"></span><span class="msg"></span></p>
+</div>
+</div>
+<script type="text/javascript">
+jQuery(document).ready(function() {
+$ = jQuery;
+initSearch();
+});
+</script>
+
+</body>
+</html>

@@ -1,0 +1,18 @@
+{% spaceless %}
+<ul class="local-navigation">
+    <li>
+        {%- for nodoPadre in nodosPadre -%}
+        {% if loop.last %}<span class="local-navigation-title"><a href="{{- nodoPadre.URL -}}" title="{{- nodoPadre.NOMBRE -}}">{{- nodoPadre.NOMBRE -}}</a></span>{% endif %}
+        {%- endfor -%}
+        {%- for nodoHijo in nodosHijo -%}
+            {%- if loop.first -%}
+        <ul class="local-navigation-links js-breadcrumbChildren js-breadcrumb-submenu">
+            {% endif %}
+            <li data-section="{{- nodoHijo.NOMBRE -}}"><a title="{{- nodoHijo.NOMBRE -}}" href="{{- nodoHijo.URL -}}">{{- nodoHijo.NOMBRE -}}</a></li>
+            {% if loop.last %}
+        </ul>
+            {% endif %}
+        {%- endfor -%}
+    </li>
+</ul>
+{% endspaceless %}

@@ -1,0 +1,11 @@
+{% spaceless %}
+{%- if nodosHijo is not empty -%}
+    <div class="es-noticia">
+        <ul>
+            {%- for nodoHijo in nodosHijo -%}
+            <li><a href="{{- nodoHijo.URL -}}">{{- nodoHijo.NOMBRE -}}</a></li>
+            {% endfor -%}
+        </ul>
+    </div>
+{%- endif -%}
+{% endspaceless %}

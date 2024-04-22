@@ -1,0 +1,23 @@
+{% spaceless %}
+<nav role="navigation" class="navegacion">
+    <?php @include("{{- pathIncludeSecciones -}}"); ?>
+    <ol class="nav-miga nthchild" data-nthchild="0">
+        {%- for nodoPadre in nodosPadre -%}
+            <li itemscope="itemscope" itemtype="http://schema.org/ListItem>
+                <a href="{{- nodoPadre.URL -}}" itemprop="url">
+                    <span itemprop="title">{{- nodoPadre.NOMBRE -}}</span>
+                 </a>
+                {%- if nodoPadre.ID == idNodo -%}
+                    <ul>
+                        {%- for nodoHijo in nodosHijo -%}
+                            <li>
+                                <a href="{{- nodoHijo.URL -}}">{{- nodoHijo.NOMBRE -}} </a>
+                            </li>
+                        {%- endfor -%}
+                    </ul>
+                {%- endif -%}
+            </li>
+        {%- endfor -%}
+    </ol>
+</nav>
+{% endspaceless %}

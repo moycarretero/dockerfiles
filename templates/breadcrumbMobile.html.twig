@@ -1,0 +1,13 @@
+{% spaceless %}
+<ul class="tab-breadcrumb js-containerbreadcrumb">
+{% set classValues = ['first-level', 'second-level', 'third-level', 'fourth-level'] %}
+    <li itemtype="http://schema.org/ListItem" itemscope="itemscope" class="home" itemref="bread-1" id="bread-0">
+        <a itemprop="url" title="Inicio" href="{{portal_public_url}}"><span itemprop="title">Inicio</span></a><span class="arrow"></span>
+    </li>
+{% for nodoPadre in nodosPadre %}
+    <li itemtype="http://schema.org/ListItem" itemscope="itemscope" class="{{ classValues[loop.index0] }}" {% if loop.last == false %}itemref="bread-{{loop.index+1}}"{% endif %} id="bread-{{loop.index}}">
+        <a itemprop="url" title="{{- nodoPadre.NOMBRE -}}" href="{{- nodoPadre.URL -}}"><span itemprop="title">{{- nodoPadre.NOMBRE -}}</span></a>{% if loop.last == false %}<span class="arrow"></span>{% endif %}
+    </li>
+{% endfor %}
+</ul>
+{% endspaceless %}

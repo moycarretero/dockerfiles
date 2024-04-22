@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Editor de Migas</title>
+
+
+<link href="{{ url_assets }}/css/base.css" rel="stylesheet" type="text/css" />
+<link rel="stylesheet" type="text/css" href="{{portal_app_url}}/bundles/ueditnavigation/css/smoothness/jquery-ui-1.10.4.custom.min.css" />
+
+
+
+<script>
+ var UrlService= "http://{{app.request.host}}{{app.request.baseurl}}/breadcrumbs/";
+ var portal = {
+    name: "CMS UEDIT",
+    url: "{{ portalName }}"
+ }
+</script>
+
+{% javascripts
+    '@UEditNavigationBundle/Resources/public/js/ue-breadcrumbEditor.js'
+    '@UEditNavigationBundle/Resources/public/js/jquery-1.9.1.min.js'
+    '@UEditNavigationBundle/Resources/public/js/jquery-ui-1.10.2.min.js' %}
+    <script src="{{ asset_url }}" type="text/javascript"></script>
+{% endjavascripts %}
+
+
+
+<style type="text/css">
+
+body {
+font-size: 12px;
+padding: 15px;
+}
+label, input {
+display: block;
+}
+input.text {
+margin-bottom: 12px;
+padding: 0.4em;
+}
+#dialog-loading p {
+margin-top: 10px;
+text-align: center;
+}
+#dialog-preview .rastro-migas {
+margin-left: 0px;
+}
+#dialog-alert p, #dialog-delete p {
+margin-top: 10px;
+}
+.ui-widget-header, .ui-widget-content {
+padding: 8px;
+}
+.node label.ui-state-disabled {
+opacity: 1;
+}
+.toolbar .ui-state-disabled, .node .ui-state-disabled {
+opacity: 0.20;
+}
+#dialog-form-validate, #dialog-breadcrumb-validate {
+border: 1px solid transparent;
+padding: 0.5em;
+margin: 10px 0 12px 0;
+}
+.no-close .ui-dialog-titlebar-close {
+display: none;
+}
+input[type="checkbox"] {
+width: inherit;
+margin: 5px 0;
+}
+#nav1, #sortable, .toolbar {
+margin-bottom: 30px;
+}
+#nav1 {
+margin-bottom: 10px;
+}
+.node {
+padding: 5px 5px 5px 15px;
+margin-bottom: 4px;
+}
+.miga, .miga .ui-button-text {
+color: #2A8A0A;
+font-weight: bold;
+}
+#resizable {
+width: 700px;
+}
+#dialog-loading, #dialog-form, #dialog-breadcrumb, #dialog-preview, #dialog-alert, #dialog-delete {
+display: none;
+}
+.btDelete, .btEdit {
+float: right;
+}
+
+.col-sm-6:nth-child(2n+2) {  clear: both;}
+.col-sm-6 {  margin: 12px 2% 10px 0;  width: 48%;  float: left;  padding: 15px;  border: 1px solid #ccc;  border-radius: 4px;}
+.col-sm-6 h4 {  margin: -30px 0 0;  float: left;  background: white;  text-align: center;  display: inline-block;  padding: 3px;  font: 1.1em "Roboto Condensed",Arial,sans-serif;  color: #222;}
+label.checkbox-label { display: table-row;}
+label.checkbox-label input[type=checkbox] {  position: relative;  vertical-align: middle;  bottom: 1px;  margin-right: 5px;}
+</style>
+</head>
+<body>
+
+<div id="editor">
+<div class="toolbar ui-widget-header ui-corner-all">
+	<button class="create-node">Nuevo</button>
+	<button class="save-order">Guardar Orden</button>
+	<button class="preview">Previsualizar</button>
+	<button class="create-breadcrumb">Generar Miga</button>
+</div>
+<div id="nav1" class="ui-widget-header ui-corner-all"></div>
+<div id="resizable">
+	<div id="sortable" class="ui-widget-content ui-corner-all"></div>
+</div>
+
+<div class="toolbar ui-widget-header ui-corner-all">
+	<button class="create-node">Nuevo</button>
+	<button class="save-order">Guardar Orden</button>
+	<button class="preview">Previsualizar</button>
+	<button class="create-breadcrumb">Generar Miga</button>
+</div>
+<!-- <button class="preview-breadcrumb">Preview</button>
+<button class="path-breadcrumb">Path</button>
+<button class="html-breadcrumb">HTML</button> -->
+<div id="dialog-loading" title="Cargando ...">
+<p><img src="http://estaticos03.cache.el-mundo.net/pruebas/mcalvo/css_desktop/miga/ajax-loader.gif" /></p>
+</div>
+<div id="dialog-form" title="Guardar Nodo">
+<p id="dialog-form-validate">Complete todos los campos.</p>
+<form>
+<fieldset>
+<input type="hidden" name="id" id="dialog-form-id" />
+<label for="dialog-form-name">Nombre</label>
+<input type="text" name="name" id="dialog-form-name" class="text ui-corner-all" maxlength="100" />
+<label for="dialog-form-url">URL</label>
+<input type="text" name="url" id="dialog-form-url" class="text ui-corner-all" maxlength="300" />
+<label for="dialog-form-visibility">Visibilidad</label>
+<input type="checkbox" name="visibility" id="dialog-form-visibility" />
+</fieldset>
+</form>
+</div>
+<div id="dialog-breadcrumb" title="Generar Miga">
+<p id="dialog-breadcrumb-validate">Rellene el campo nombre.</p>
+<form>
+<fieldset>
+<input type="hidden" name="id" id="dialog-breadcrumb-id" />
+<input type="hidden" name="nodoId" id="dialog-breadcrumb-nodoid" />
+<label for="dialog-breadcrumb-name" maxlength="100">Nombre</label>
+<input type="text" name="name" id="dialog-breadcrumb-name" class="text ui-corner-all" />
+<label for="dialog-breadcrumb-template">Plantilla</label>
+{% for format in formats %}
+    <div class="col-sm-6">
+      <h4>{{ format.name }}</h4>
+      {% for output in format.outputs %}
+        <label class="checkbox-label"><input type="checkbox" {% if output.name != 'legacy_es_noticia' %}checked{% endif %} name="{{ format.name }}-{{ output.name }}">{{ output.name }}</label>
+      {% endfor %}
+    </div>
+{% endfor %}
+</fieldset>
+</form>
+</div>
+<div id="dialog-preview" title="Previsualizaci&oacute;n"></div>
+<div id="dialog-alert" title="Alerta">
+<p><span class="ui-icon ui-icon-alert" style="float: left; margin: 0 7px 20px 0;"></span><span class="msg"></span></p>
+</div>
+<div id="dialog-delete" title="Confirmar eliminar">
+<p><span class="ui-icon ui-icon-alert" style="float: left; margin: 0 7px 20px 0;"></span>Estas seguro que desea eliminar este nodo?</p>
+</div>
+</div>
+</body>
+<script type="text/javascript">
+jQuery(document).ready(function() {
+$ = jQuery;
+init();
+});
+</script>

@@ -1,0 +1,11 @@
+{% spaceless %}
+{%- for nodoHijo in nodosHijo -%}
+    {%- if loop.first -%}
+<ul class="tab-breadcrumb-list js-breadcrumbChildren js-breadcrumb-submenu">
+    {% endif %}
+    <li data-section="{{- nodoHijo.NOMBRE | slug -}}"><a title="{{- nodoHijo.NOMBRE -}}" href="{{- nodoHijo.URL -}}">{{- nodoHijo.NOMBRE -}}</a></li>
+    {% if loop.last %}
+</ul>
+    {% endif %}
+{%- endfor -%}
+{% endspaceless %}
